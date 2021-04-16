@@ -20,7 +20,7 @@ openshift_user_password:                "openshift"
 
 # install-config.yml variables
 aws_region:                             us-east-1
-openshift_cluster_name:                 openshift4
+openshift_cluster_name:                 openshift-demo
 openshift_cluster_base_domain:          lab-emergent360.com
 openshift_cluster_fqdn:                 "{{ openshift_cluster_name }}.{{ openshift_cluster_base_domain }}"
 openshift_control_node_instance_type:   m5a.xlarge     # default = 4vCPUs / 16 GB RAM (i.e. m5a.xlarge)
