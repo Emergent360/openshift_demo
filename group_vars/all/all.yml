@@ -5,7 +5,7 @@
 openshift_installer_type:               local
 
 # get installation files playbook variables
-openshift_version:                      4.7.6
+openshift_version:                      "{{ openshift_version }}"
 openshift_installer_path:               "{{ ansible_env.PWD }}"
 openshift_build_path:                   "{{ ansible_env.PWD }}/build"
 openshift_odo_version:                  2.0.1
@@ -20,19 +20,19 @@ openshift_user_password:                "openshift"
 
 # install-config.yml variables
 aws_region:                             us-east-1
-openshift_cluster_name:                 openshift-demo
+openshift_cluster_name:                 "{{ openshift_cluster_name }}"
 openshift_cluster_base_domain:          lab-emergent360.com
 openshift_cluster_fqdn:                 "{{ openshift_cluster_name }}.{{ openshift_cluster_base_domain }}"
 openshift_control_node_instance_type:   m5a.xlarge     # default = 4vCPUs / 16 GB RAM (i.e. m5a.xlarge)
 openshift_control_node_replicas:        3              # use a value of '3' only
 openshift_worker_node_instance_type:    m5a.xlarge	   # reduced
-openshift_worker_node_replicas:         2              # only 2
+openshift_worker_node_replicas:         "{{ openshift_worker_node_replicas }}"              # only 2
 openshift_install_pull_secret:          " {{ lookup('file', '{{ openshift_installer_path }}/pull-secret') }}"
 openshift_node_ssh_public_key:          "{{ lookup('file', '{{ openshift_build_path }}/{{ openshift_cluster_name }}-key.pub') }}"
 openshift_installer_log_level:          debug          # recommended log level options: info or debug
 
 # web terminal operator variables
-deploy_web_terminal:                    True
+deploy_web_terminal:                    false
 openshift_webcli_idle_timeout:          24h
 
 # serverless operator
@@ -43,7 +43,7 @@ deploy_ansible_automation:              False
 deploy_ansible_automation_workshop:     False
 
 # deploy codeready workspaces
-deploy_codeready_workspaces:            True
+deploy_codeready_workspaces:            false
 
 # service mesh operator variables
 deploy_service_mesh:                    false
