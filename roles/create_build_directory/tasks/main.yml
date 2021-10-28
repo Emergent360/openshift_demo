@@ -57,9 +57,17 @@
     size: 4096
     type: rsa
 
-- name: Set ssh key fact
+- name: get the public key contents
+  slurp:
+    src: "{{ openshift_build_path }}/{{ openshift_cluster_name }}-key.pub }}"
+  register: pub_key
+
+- debug:
+    var: pub_key
+
+- name: set ssh key fact
   set_fact:
-    openshift_node_ssh_public_key: "{{ lookup('file', '{{ openshift_build_path }}/{{ openshift_cluster_name }}-key.pub') }}"
+    openshift_node_ssh_public_key: "{{ pub_key.content }}"
 
 - name: create openshift install-config.yaml file
   template:
