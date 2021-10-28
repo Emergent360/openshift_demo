@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: create build directory
+      include_role:
+        name: create_build_directory
