@@ -59,7 +59,7 @@
 
 - name: get the public key contents
   slurp:
-    src: "{{ openshift_build_path }}/{{ openshift_cluster_name }}-key.pub }}"
+    src: "{{ openshift_build_path }}/{{ openshift_cluster_name }}-key.pub"
   register: pub_key
 
 - debug:
