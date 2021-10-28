@@ -67,7 +67,7 @@
 
 - name: set ssh key fact
   set_fact:
-    openshift_node_ssh_public_key: "{{ pub_key.content }}"
+    openshift_node_ssh_public_key: "{{ pub_key.content | b64decode }}"
 
 - name: create openshift install-config.yaml file
   template:
