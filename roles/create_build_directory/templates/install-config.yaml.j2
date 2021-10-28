@@ -27,6 +27,6 @@ networking:
 platform:
   aws:
     region: {{ aws_region }}
-pullSecret: '{{ openshift_install_pull_secret | regex_replace( '^ ', '' ) }}'
+pullSecret: '{{ openshift_install_pull_secret }}'
 fips: false
 sshKey: {{ openshift_node_ssh_public_key }}
