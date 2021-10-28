@@ -76,6 +76,7 @@
 
 - name: backup install-config.yaml file as install-config.yaml.backup
   copy:
+    remote_src: yes
     src: "{{ openshift_build_path }}/install-config.yaml"
     dest: "{{ openshift_build_path }}/install-config.yaml.backup"
 
