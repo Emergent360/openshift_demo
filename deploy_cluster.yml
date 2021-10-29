@@ -5,3 +5,7 @@
     - name: create manifests
       command:
         cmd: "{{ openshift_build_path }}/openshift-install create manifests --dir={{ openshift_build_path }} --log-level={{ openshift_installer_log_level }}"
+
+    - name: create cluster
+      command:
+        cmd: "{{ openshift_build_path }}/openshift-install create cluster --dir={{ openshift_build_path }} --log-level={{ openshift_installer_log_level }}"
