@@ -5,8 +5,15 @@
     - name: destroy cluster
       command:
         cmd: "{{ openshift_build_path }}/openshift-install destroy cluster --dir={{ openshift_build_path }} --log-level={{ openshift_installer_log_level }}"
-      register: cmd_output
+      register: result
 
     - name: print output
       debug:
-        msg: "{{ cmd_output.stderr.split('\n') }}"
+        msg: "{{ result.stderr.split('\n') }}"
+      when: result is succeeded
+
+    - name: remove build directory
+      file:
+        path: {{ openshift_build_path }}
+        state: absent
+      when: result is succeeded
