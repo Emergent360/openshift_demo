@@ -9,4 +9,4 @@
 
     - name: print output
       debug:
-        msg: "{{ cmd_output.stderr }}"
+        msg: "{{ cmd_output.stderr.split('\n') }}"
