@@ -6,7 +6,7 @@ openshift_installer_type:               local
 
 # get installation files playbook variables
 openshift_version:                      4.8.18
-openshift_installer_path:               "/home/ec2-user/openshift-{{ cluster-name }}"
+openshift_installer_path:               "/home/ec2-user/openshift-{{ cluster_name }}"
 openshift_build_path:                   "{{ openshift_installer_path }}/build"
 openshift_odo_version:                  2.0.1
 openshift_odo_path:                     /usr/local/bin/
