@@ -1,0 +1,7 @@
+---
+- hosts: all
+
+  tasks:
+    - name: create manifests
+      command:
+        cmd: "{{ openshift_build_path }}/openshift-install create manifests --dir={{ openshift_build_path }} --log-level={{ openshift_installer_log_level }}"

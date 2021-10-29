@@ -29,7 +29,7 @@ openshift_worker_node_instance_type:    m5a.xlarge	   # reduced
 openshift_worker_node_replicas:         0
 openshift_install_pull_secret:          " {{ lookup('file', '{{ openshift_installer_path }}/pull-secret') }}"
 openshift_node_ssh_public_key:          "{{ lookup('file', '{{ openshift_build_path }}/{{ openshift_cluster_name }}-key.pub') }}"
-openshift_installer_log_level:          debug          # recommended log level options: info or debug
+openshift_installer_log_level:          info          # recommended log level options: info or debug
 
 # web terminal operator variables
 deploy_web_terminal:                    false
