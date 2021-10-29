@@ -9,3 +9,8 @@
     - name: create cluster
       command:
         cmd: "{{ openshift_build_path }}/openshift-install create cluster --dir={{ openshift_build_path }} --log-level={{ openshift_installer_log_level }}"
+      register: cmd_output
+
+    - name: print output
+      debug:
+        msg: "{{ cmd_output.stderr }}"
