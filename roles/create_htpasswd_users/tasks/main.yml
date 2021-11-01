@@ -1,9 +1,4 @@
 ---
-- name: Set default variables for automated build (facts)
-  set_fact:
-    kubeadmin_password: "{{ lookup('file', '{{ openshift_build_path }}/auth/kubeadmin-password') }}"
-  when: openshift_installer_type == "automation"
-
 - name: generate users.htpasswd file - create admin account entry
   htpasswd:
     create: yes
@@ -15,9 +10,9 @@
 - name: generate users.htpasswd file - create workshop user entries
   htpasswd:
     path: "{{ openshift_build_path }}/users.htpasswd"
-    name: "user{{ item }}"
+    name: "{{ item }}"
     password: "{{ openshift_user_password }}"
-  with_sequence: count="{{ openshift_user_count }}"
+  with_items: "{{ htpasswd_users }}"
 
 - name: push users.htpasswd file to openshift control plane
   shell: |
