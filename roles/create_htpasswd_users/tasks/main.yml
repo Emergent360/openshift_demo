@@ -1,8 +1,12 @@
 ---
-- name: get kubeadmin passwd
+- name: get kubeadmin passwd file
   slurp:
     src: "{{ openshift_build_path }}//auth/kubeadmin-password"
-  register: kubeadmin_password
+  register: kubeadmin_file
+
+- name: set kubeadmin passwd
+  set_fact:
+    kubeadmin_password: "{{ kubeadmin_file.content }}"
 
 - name: generate users.htpasswd file - create admin account entry
   htpasswd:
