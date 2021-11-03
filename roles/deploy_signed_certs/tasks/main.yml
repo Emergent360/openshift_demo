@@ -1,10 +1,15 @@
 ---
+- name: set build path
+  set_fact:
+    openshift_build_path: "/home/ec2-user/openshift-{{ cluster_name }}/build"
+
 - name: Get default ingress controller
   k8s_info:
     api_version: v1
     kind: IngressController
     name: default
     namespace: openshift-ingress-operator
+    kubeconfig: "{{ openshift_build_path }}/auth/"
   register: le_wildcard
 
 - name: set letsencrypt facts
