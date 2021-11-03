@@ -39,6 +39,7 @@
 
 - name: create api cert secret
   shell: >
+    export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
     "{{openshift_build_path }}/oc"
     create
     secret
@@ -50,6 +51,7 @@
 
 - name: create apps cert secret
   shell: >
+    export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
     "{{openshift_build_path }}/oc"
     create
     secret
