@@ -1,6 +1,6 @@
 ---
 
-- name: Set default variables for automated build (facts)
+- name: set build path
   set_fact:
     openshift_build_path: "/home/ec2-user/openshift-{{ cluster_name }}/build"
 
