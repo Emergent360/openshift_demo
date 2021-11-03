@@ -17,4 +17,5 @@
     le_wildcard: "*.{{le_wildcard.resources[0].status.domain}}"
     le_api: "{{ le_wildcard.resources[0].status.domain | regex_replace('^apps\\.', 'api.') }}"
     le_secret_name: "le-certs-{{ ansible_date_time.date }}"
+    le_domain: "openshift-{{ cluster_name }}"
 
