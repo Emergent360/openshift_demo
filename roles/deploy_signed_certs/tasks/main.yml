@@ -28,7 +28,7 @@
     --noninteractive
     --agree-tos
   
-- name: certbot to request cert for apps
+- name: certbot to request cert for api
   shell: >
     certbot certonly
     --dns-route53
