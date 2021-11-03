@@ -23,7 +23,7 @@
   shell: >
     certbot certonly
     --dns-route53
-    -d *.${LE_WILDCARD}
+    -d "{{ le_wildcard }}"
     --email dpullman@emergent360.com
     --noninteractive
     --agree-tos
@@ -32,7 +32,7 @@
   shell: >
     certbot certonly
     --dns-route53
-    -d ${LE_API}
+    -d "{{ le_api }}"
     --email dpullman@emergent360.com
     --noninteractive
     --agree-tos
