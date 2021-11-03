@@ -37,3 +37,26 @@
     --noninteractive
     --agree-tos
 
+- name: create api cert secret
+  shell: >
+    "{{openshift_build_path }}/oc"
+    create
+    secret
+    tls
+    api-secret
+    --cert=/home/ec2-user/.certbot/config/live/api."{{ le_domain }}".lab-emergent360.com/fullchain.pem
+    --key=/home/ec2-user/.certbot/config/live/api."{{ le_domain }}".lab-emergent360.com/privkey.pem
+    -n openshift-config
+
+- name: create apps cert secret
+  shell: >
+    "{{openshift_build_path }}/oc"
+    create
+    secret
+    tls
+    apps-secret
+    --cert=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/fullchain.pem
+    --key=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/privkey.pem
+    -n openshift-ingress
+
+
