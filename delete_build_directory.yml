@@ -1,0 +1,8 @@
+---
+- hosts: all
+
+  tasks:
+    - name: remove installer directory
+      file:
+        path: "{{ openshift_installer_path }}"
+        state: absent
