@@ -1,0 +1,15 @@
+---
+- name: Get default ingress controller
+  community.kubernetes.k8s_info:
+    api_version: v1
+    kind: IngressController
+    name: default
+    namespace: openshift-ingress-operator
+  register: le_wildcard
+
+- name: set letsencrypt facts
+  set_fact:
+    le_wildcard: "*.{{le_wildcard.resources[0].status.domain}}"
+    le_api: "{{ le_wildcard.resources[0].status.domain | regex_replace('^apps\\.', 'api.') }}"
+    le_secret_name: "le-certs-{{ ansible_date_time.date }}"
+
