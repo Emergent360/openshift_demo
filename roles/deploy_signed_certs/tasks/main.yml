@@ -19,3 +19,21 @@
     le_secret_name: "le-certs-{{ ansible_date_time.date }}"
     le_domain: "openshift-{{ cluster_name }}"
 
+- name: certbot to request cert for apps
+  shell: >
+    certbot certonly
+    --dns-route53
+    -d *.${LE_WILDCARD}
+    --email dpullman@emergent360.com
+    --noninteractive
+    --agree-tos
+  
+- name: certbot to request cert for apps
+  shell: >
+    certbot certonly
+    --dns-route53
+    -d ${LE_API}
+    --email dpullman@emergent360.com
+    --noninteractive
+    --agree-tos
+
