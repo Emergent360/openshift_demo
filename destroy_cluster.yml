@@ -6,6 +6,7 @@
       command:
         cmd: "{{ openshift_build_path }}/openshift-install destroy cluster --dir={{ openshift_build_path }} --log-level={{ openshift_installer_log_level }}"
       register: result
+      ignore_errors: yes
 
     - name: print output
       debug:
