@@ -37,6 +37,15 @@
     --noninteractive
     --agree-tos
 
+- name: remove api secret
+  k8s:
+    state: absent
+    api_version: v1
+    kind: secret
+    name: api-secret
+    namespace: openshift-config
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
+
 - name: check for an existing api-secret object
   k8s_info:
     api_version: v1
@@ -49,14 +58,6 @@
 - debug:
     var: api_secret_check
 
-- name: remove api secret
-  k8s:
-    state: absent
-    api_version: v1
-    kind: secret
-    name: api-secret
-    namespace: openshift-config
-    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
 
 - name: check for an existing apps-secret object
   k8s_info:
