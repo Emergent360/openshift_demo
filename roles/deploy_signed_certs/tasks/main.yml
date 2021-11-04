@@ -49,6 +49,16 @@
 - debug:
     var: api_secret_check
 
+- name: remove api secret
+  k8s:
+    state: absent
+    definition:
+      api_version: v1
+      kind: secret
+      name: api-secret
+      namespace: openshift-config
+      kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
+      
 - name: check for an existing apps-secret object
   k8s_info:
     api_version: v1
@@ -85,18 +95,18 @@
     --key=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/privkey.pem
     -n openshift-ingress
 
-- name: patch api server to use cert
-  k8s:
-    state: present
-    definition:
-      api_version: config.openshift.io/v1
-      kind: APIServer
-      metadata:
-        name: cluster
-      spec:
-        servingCerts:
-          namedCertificates:
-          - names:
-            - "{{ le_api }}"
-            servingCertificate:
-              name: api-secret
+#- name: patch api server to use cert
+#  k8s:
+#    state: present
+#    definition:
+#      api_version: config.openshift.io/v1
+#      kind: APIServer
+#      metadata:
+#        name: cluster
+#      spec:
+#        servingCerts:
+#          namedCertificates:
+#          - names:
+#            - "{{ le_api }}"
+#            servingCertificate:
+#              name: api-secret
