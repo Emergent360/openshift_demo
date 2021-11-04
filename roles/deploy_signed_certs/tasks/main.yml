@@ -96,3 +96,5 @@
             - "{{ le_api }}"
             servingCertificate:
               name: api-secret
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
+
