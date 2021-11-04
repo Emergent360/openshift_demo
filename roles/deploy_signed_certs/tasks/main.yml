@@ -66,7 +66,7 @@
     --cert=/home/ec2-user/.certbot/config/live/api."{{ le_domain }}".lab-emergent360.com/fullchain.pem
     --key=/home/ec2-user/.certbot/config/live/api."{{ le_domain }}".lab-emergent360.com/privkey.pem
     -n openshift-config
-  when: api_secret_check.resources | length > 0
+  when: api_secret_check.resources | length == 0
 
 - name: create apps cert secret
   shell: >
@@ -79,7 +79,7 @@
     --cert=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/fullchain.pem
     --key=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/privkey.pem
     -n openshift-ingress
-  when: apps_secret_check.resources | length > 0
+  when: apps_secret_check.resources | length == 0
 
 #- name: patch api server to use cert
 #  k8s:
