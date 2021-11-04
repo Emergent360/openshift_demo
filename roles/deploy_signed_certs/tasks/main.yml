@@ -37,6 +37,13 @@
     --noninteractive
     --agree-tos
 
+- name: Get an existing Service object
+  k8s_info:
+    api_version: v1
+    kind: secret
+    name: api-secret
+    namespace: openshift-config
+
 - name: create api cert secret
   shell: >
     export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
