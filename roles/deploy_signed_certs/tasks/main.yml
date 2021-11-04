@@ -81,18 +81,18 @@
     -n openshift-ingress
   when: apps_secret_check.resources | length == 0
 
-#- name: patch api server to use cert
-#  k8s:
-#    state: present
-#    definition:
-#      api_version: config.openshift.io/v1
-#      kind: APIServer
-#      metadata:
-#        name: cluster
-#      spec:
-#        servingCerts:
-#          namedCertificates:
-#          - names:
-#            - "{{ le_api }}"
-#            servingCertificate:
-#              name: api-secret
+- name: patch api server to use cert
+  k8s:
+    state: present
+    definition:
+      api_version: config.openshift.io/v1
+      kind: APIServer
+      metadata:
+        name: cluster
+      spec:
+        servingCerts:
+          namedCertificates:
+          - names:
+            - "{{ le_api }}"
+            servingCertificate:
+              name: api-secret
