@@ -37,13 +37,29 @@
     --noninteractive
     --agree-tos
 
-- name: Get an existing Service object
+- name: check for an existing api-secret object
   k8s_info:
     api_version: v1
     kind: secret
     name: api-secret
     namespace: openshift-config
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
+  register: api_secret_check
+
+- debug:
+    var: api_secret_check
+
+- name: check for an existing apps-secret object
+  k8s_info:
+    api_version: v1
+    kind: secret
+    name: apps-secret
+    namespace: openshift-ingress
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
+  register: apps_secret_check
+
+- debug:
+    var: apps_secret_check
 
 - name: create api cert secret
   shell: >
