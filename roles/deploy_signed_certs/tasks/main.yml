@@ -61,4 +61,18 @@
     --key=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/privkey.pem
     -n openshift-ingress
 
-
+- name: patch api server to use cert
+  k8s:
+    state: present
+    definition:
+      api_version: config.openshift.io/v1
+      kind: APIServer
+      metadata:
+        name: cluster
+      spec:
+        servingCerts:
+          namedCertificates:
+          - names:
+            - "{{ le_api }}"
+            servingCertificate:
+              name: api-secret
