@@ -43,6 +43,7 @@
     kind: secret
     name: api-secret
     namespace: openshift-config
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
 
 - name: create api cert secret
   shell: >
