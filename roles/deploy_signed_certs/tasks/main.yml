@@ -97,6 +97,7 @@
             servingCertificate:
               name: api-secret
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
+  ignore_errors: yes
 
 - name: backup the kubeconfig file
   copy:
