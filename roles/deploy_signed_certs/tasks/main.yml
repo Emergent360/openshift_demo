@@ -101,3 +101,29 @@
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
   ignore_errors: yes
 
+- name: create certbot config map
+  shell: >
+    export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
+    "{{openshift_build_path }}/oc"
+    create
+    configmap
+    certbot-ca
+    --from-file=ca-bundle.crt=/home/ec2-user/.certbot/config/archive/apps.${LE_DOMAIN}.lab-emergent360.com/chain1.pem -n openshift-config
+    -n openshift-config
+  when: apps_secret_check.resources | length == 0
+
+- name: patch proxy
+  shell: >
+    export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
+    "{{openshift_build_path }}/oc"
+    patch proxy/cluster
+    --type=merge
+    --patch='{"spec":{"trustedCA":{"name":"certbot-ca"}}}'
+
+- name: patch ingress
+  shell: >
+    export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
+    "{{openshift_build_path }}/oc"
+    patch ingresscontroller.operator default
+    --type=merge -p '{"spec":{"defaultCertificate": {"name": "apps-secret"}}}'
+    -n openshift-ingress-operator
