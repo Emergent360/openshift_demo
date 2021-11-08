@@ -98,3 +98,7 @@
               name: api-secret
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
 
+- name: backup the kubeconfig file
+  copy:
+    src: "{{ openshift_build_path }}/auth/kubeconfig"
+    dest: "{{ openshift_build_path }}/auth/kubeconfig.bak"
