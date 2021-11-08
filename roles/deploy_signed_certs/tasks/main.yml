@@ -101,15 +101,3 @@
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
   ignore_errors: yes
 
-- name: backup the kubeconfig file
-  copy:
-    src: "{{ openshift_build_path }}/auth/kubeconfig"
-    dest: "{{ openshift_build_path }}/auth/kubeconfig.bak"
-
-- name: create updated kubeconfig
-  shell: |
-    cat "{{ openshift_build_path }}/auth/kubeconfig" | grep certificate-authority-data | awk '{print $2}' | base64 -d > "{{ openshift_build_path }}/auth/kubeconfig-bundle.crt"
-    cat /home/ec2-user/.certbot/config/archive/api.openshift4.lab-emergent360.com/chain1.pem >> "{{ openshift_build_path }}/auth/kubeconfig-bundle.crt"
-    OLD_CERTS="\$(cat "{{ openshift_build_path }}/auth/kubeconfig" | grep certificate-authority-data | awk '{print $2}' | tr -d '\n')"
-    NEW_CERTS="\$(cat {{ openshift_build_path }}/auth/kubeconfig-bundle.crt | base64 -w 0 | tr -d '\n')"
-    sed -i "s|$OLD_CERTS|$NEW_CERTS|" "{{ openshift_build_path }}/auth/kubeconfig"
