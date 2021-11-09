@@ -97,7 +97,7 @@
     create
     configmap
     certbot-ca
-    --from-file=ca-bundle.crt=/home/ec2-user/.certbot/config/archive/apps.${LE_DOMAIN}.lab-emergent360.com/chain1.pem
+    --from-file=ca-bundle.crt=/home/ec2-user/.certbot/config/archive/apps."{{ le_domain }}".lab-emergent360.com/chain1.pem
     -n openshift-config
 
 - name: patch proxy
