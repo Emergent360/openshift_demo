@@ -48,15 +48,6 @@
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
   register: api_secret_check
 
-- name: check for an existing apps-secret object
-  k8s_info:
-    api_version: v1
-    kind: secret
-    name: apps-secret
-    namespace: openshift-ingress
-    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
-  register: apps_secret_check
-
 - name: create api cert secret
   shell: >
     export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
@@ -69,19 +60,6 @@
     --key=/home/ec2-user/.certbot/config/live/api."{{ le_domain }}".lab-emergent360.com/privkey.pem
     -n openshift-config
   when: api_secret_check.resources | length == 0
-
-- name: create apps cert secret
-  shell: >
-    export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
-    "{{openshift_build_path }}/oc"
-    create
-    secret
-    tls
-    apps-secret
-    --cert=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/fullchain.pem
-    --key=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/privkey.pem
-    -n openshift-ingress
-  when: apps_secret_check.resources | length == 0
 
 - name: patch api server to use cert
   k8s:
@@ -101,6 +79,17 @@
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
   ignore_errors: yes
 
+- name: backup the kubeconfig file
+  copy:
+    src: "{{ openshift_build_path }}/auth/kubeconfig"
+    remote_src: yes
+    dest: "{{ openshift_build_path }}/auth/kubeconfig.bak"
+
+- name: create updated kubeconfig
+  script:
+    cmd: update_kubeconfig.sh "{{ le_domain }}" "{{ openshift_build_path }}"
+    chdir: "{{ openshift_build_path }}"
+
 - name: create certbot config map
   shell: >
     export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
@@ -108,7 +97,7 @@
     create
     configmap
     certbot-ca
-    --from-file=ca-bundle.crt=/home/ec2-user/.certbot/config/archive/apps.${LE_DOMAIN}.lab-emergent360.com/chain1.pem -n openshift-config
+    --from-file=ca-bundle.crt=/home/ec2-user/.certbot/config/archive/apps.${LE_DOMAIN}.lab-emergent360.com/chain1.pem
     -n openshift-config
   when: apps_secret_check.resources | length == 0
 
@@ -120,10 +109,34 @@
     --type=merge
     --patch='{"spec":{"trustedCA":{"name":"certbot-ca"}}}'
 
+- name: check for an existing apps-secret object
+  k8s_info:
+    api_version: v1
+    kind: secret
+    name: apps-secret
+    namespace: openshift-ingress
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
+  register: apps_secret_check
+
+- name: create apps cert secret
+  shell: >
+    export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
+    "{{openshift_build_path }}/oc"
+    create
+    secret
+    tls
+    apps-secret
+    --cert=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/fullchain.pem
+    --key=/home/ec2-user/.certbot/config/live/apps."{{ le_domain }}".lab-emergent360.com/privkey.pem
+    -n openshift-ingress
+  when: apps_secret_check.resources | length == 0
+
+
 - name: patch ingress
   shell: >
     export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
     "{{openshift_build_path }}/oc"
     patch ingresscontroller.operator default
-    --type=merge -p '{"spec":{"defaultCertificate": {"name": "apps-secret"}}}'
+    --type=merge 
+    -p '{"spec":{"defaultCertificate": {"name": "apps-secret"}}}'
     -n openshift-ingress-operator
