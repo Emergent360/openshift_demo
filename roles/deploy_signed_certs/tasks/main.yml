@@ -99,7 +99,6 @@
     certbot-ca
     --from-file=ca-bundle.crt=/home/ec2-user/.certbot/config/archive/apps.${LE_DOMAIN}.lab-emergent360.com/chain1.pem
     -n openshift-config
-  when: apps_secret_check.resources | length == 0
 
 - name: patch proxy
   shell: >
