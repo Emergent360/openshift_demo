@@ -37,7 +37,7 @@
   when: not full_chain.stat.exists
 
 - name: Get default ingress controller
-  community.kubernetes.k8s_info:
+  k8s_info:
     api_version: v1
     kind: IngressController
     name: default
