@@ -1,7 +1,5 @@
 ---
 - hosts: all
-  collections:
-    - community.kubernetes
     
   tasks:
     - name: deploy signed certs
