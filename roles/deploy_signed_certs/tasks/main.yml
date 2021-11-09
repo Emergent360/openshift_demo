@@ -132,7 +132,7 @@
   when: not full_chain.stat.exists
 
 - name: Patch ingress to use new certificate
-  community.kubernetes.k8s:
+  k8s:
     state: present
     definition:
       api_version: v1
@@ -146,7 +146,7 @@
   when: not full_chain.stat.exists
 
 - name: Patch api server to use new certificate
-  community.kubernetes.k8s:
+  k8s:
     state: present
     definition:
       api_version: config.openshift.io/v1
