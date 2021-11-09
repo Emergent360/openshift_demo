@@ -42,6 +42,7 @@
     kind: IngressController
     name: default
     namespace: openshift-ingress-operator
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
   register: le_wildcard
   when: not full_chain.stat.exists
 
