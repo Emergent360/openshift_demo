@@ -131,7 +131,7 @@
   with_items:
     - openshift-config
     - openshift-ingress
-#  when: not full_chain.stat.exists
+  when: not full_chain.stat.exists
 
 - name: Patch ingress to use new certificate
   k8s:
@@ -146,8 +146,9 @@
         defaultCertificate:
           name: "{{ le_secret_name }}"
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
-#  when: not full_chain.stat.exists
+  when: not full_chain.stat.exists
 
+kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
 - name: Patch api server to use new certificate
   k8s:
     state: present
@@ -164,4 +165,4 @@
             servingCertificate:
               name: "{{ le_secret_name }}"
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
-#  when: not full_chain.stat.exists
+  when: not full_chain.stat.exists
