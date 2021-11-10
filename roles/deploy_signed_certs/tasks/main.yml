@@ -182,4 +182,4 @@
 - name: Update kubeconfig for change in CA
   ansible.builtin.replace:
     path: "{{ kubeconfig }}"
-    regexp: '^\s+certificate-authority-data:.*$"
+    regexp: '^\s+certificate-authority-data:.*$'
