@@ -148,7 +148,6 @@
     kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
   when: not full_chain.stat.exists
 
-kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
 - name: Patch api server to use new certificate
   k8s:
     state: present
