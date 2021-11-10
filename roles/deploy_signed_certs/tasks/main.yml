@@ -119,6 +119,7 @@
 
 - name: Create OCP secret
   ansible.builtin.shell: >
+    export KUBECONFIG="{{ openshift_build_path }}/auth/kubeconfig";
     "{{openshift_build_path }}/oc"
     create
     secret
@@ -144,6 +145,7 @@
       spec:
         defaultCertificate:
           name: "{{ le_secret_name }}"
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
   when: not full_chain.stat.exists
 
 - name: Patch api server to use new certificate
@@ -161,4 +163,5 @@
             - "{{ le_api }}"
             servingCertificate:
               name: "{{ le_secret_name }}"
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
   when: not full_chain.stat.exists
