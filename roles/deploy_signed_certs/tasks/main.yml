@@ -54,7 +54,7 @@
   set_fact:
     le_wildcard: "*.{{le_wildcard.resources[0].status.domain}}"
     le_api: "{{ le_wildcard.resources[0].status.domain | regex_replace('^apps\\.', 'api.') }}"
-    le_secret_name: "le-certs-{{ ansible_date_time.date }}"
+    le_secret_name: "le-certs-secret"
 #  when: not full_chain.stat.exists
 
 - name: Create finalcerts dir if it doesn't exist
@@ -121,6 +121,15 @@
     --debug
   when: not full_chain.stat.exists
 
+- name: check for an existing secret object
+  k8s_info:
+    api_version: v1
+    kind: secret
+    name: api-secret
+    namespace: openshift-config
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
+  register: api_secret_check
+
 - name: Create OCP secret
   ansible.builtin.shell: >
     export KUBECONFIG="{{ kubeconfig }}";
@@ -135,7 +144,7 @@
   with_items:
     - openshift-config
     - openshift-ingress
-#  when: not full_chain.stat.exists
+  when: api_secret_check.resources | length == 0
 
 - name: Patch ingress to use new certificate
   k8s:
