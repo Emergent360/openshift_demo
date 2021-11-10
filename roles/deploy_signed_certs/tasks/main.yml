@@ -6,7 +6,7 @@
 
 - name: set KUBECONFIG
   set_fact:
-    kubeconfig: "{{ kubeconfig }}"
+    kubeconfig: "{{ openshift_build_path }}/auth/kubeconfig"
 
 - name: Check if fullchain.pem file already exists
   stat:
