@@ -1,7 +1,13 @@
 ---
 - hosts: all
+  vars:
+    num_hosts: "{{ groups['tag_Name_Workshop_Provisioner_Prod'] | length }}"
 
   tasks:
+    - name: check provisioner is in inventory
+      fail: msg="Check that provision-prod is running"
+      when: num_hosts | int < 1
+
     - name: create build directory
       include_role:
         name: create_build_directory
