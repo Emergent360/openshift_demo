@@ -40,7 +40,7 @@
   when: openshift_installer_type != "automation"
 
 - name: generate cluster ssh key pair
-  openssh_keypair:
+  community.crypto.openssh_keypair:
     path: "{{ openshift_build_path }}/{{ openshift_cluster_name }}-key"
     size: 4096
     type: rsa
